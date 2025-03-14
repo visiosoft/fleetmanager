@@ -33,21 +33,25 @@ export const StyledBadge = styled('span', {
    color: '$white',
    variants: {
       type: {
-         active: {
+         success: {
             bg: '$successLight',
             color: '$successLightContrast',
          },
-         paused: {
+         error: {
             bg: '$errorLight',
             color: '$errorLightContrast',
          },
-         vacation: {
+         warning: {
             bg: '$warningLight',
             color: '$warningLightContrast',
          },
+         default: {
+            bg: '$gray200',
+            color: '$gray800',
+         }
       },
    },
    defaultVariants: {
-      type: 'active',
+      type: 'default',
    },
 });
