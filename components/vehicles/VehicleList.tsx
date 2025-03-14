@@ -13,8 +13,7 @@ import { User } from '@nextui-org/react';
 const columns = [
   { name: 'VEHICLE', uid: 'vehicle' },
   { name: 'TYPE', uid: 'type' },
-  { name: 'MAKE', uid: 'make' },
-  { name: 'MODEL', uid: 'model' },
+  { name: 'DRIVER', uid: 'driver' },
   { name: 'LOCATION', uid: 'location' },
   { name: 'STATUS', uid: 'status' },
   { name: 'MILEAGE', uid: 'mileage' },
@@ -145,20 +144,39 @@ const VehicleList = () => {
         return (
           <User
             squared
-            src={vehicle.image || undefined}
+            src={vehicle.image || 'https://i.pravatar.cc/150'}
             name={vehicle.licensePlate}
             css={{ p: 0 }}
-            description={`${vehicle.make} ${vehicle.model}`}
           >
-            {vehicle.licensePlate}
+            {`${vehicle.make} ${vehicle.model}`}
           </User>
         );
       case 'type':
         return (
           <Col>
             <Row>
-              <Text b size={14} css={{ tt: 'capitalize' }}>
+              <Text b size="small" css={{ tt: "capitalize" }}>
                 {vehicle.type}
+              </Text>
+            </Row>
+          </Col>
+        );
+      case 'driver':
+        return (
+          <Col>
+            <Row>
+              <Text b size="small" css={{ tt: "capitalize" }}>
+                {vehicle.driverName || 'Unassigned'}
+              </Text>
+            </Row>
+          </Col>
+        );
+      case 'location':
+        return (
+          <Col>
+            <Row>
+              <Text b size="small" css={{ tt: "capitalize" }}>
+                {vehicle.location}
               </Text>
             </Row>
           </Col>
@@ -166,23 +184,14 @@ const VehicleList = () => {
       case 'status':
         return (
           <StyledBadge type={getStatusColor(vehicle.status)}>
-            {vehicle.status.charAt(0).toUpperCase() + vehicle.status.slice(1)}
+            {vehicle.status}
           </StyledBadge>
         );
       case 'mileage':
         return (
-          <Col>
-            <Row>
-              <Text b size={14}>
-                {vehicle.mileage.toLocaleString()}
-              </Text>
-            </Row>
-            <Row>
-              <Text b size={13} css={{ color: '$accents7' }}>
-                km
-              </Text>
-            </Row>
-          </Col>
+          <Text b size="small">
+            {vehicle.mileage.toLocaleString()} km
+          </Text>
         );
       case 'actions':
         return (
@@ -365,6 +374,10 @@ const VehicleList = () => {
                       <div>
                         <p className="text-sm text-gray-500">Type</p>
                         <p className="font-medium text-gray-900">{selectedVehicle.type}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Driver</p>
+                        <p className="font-medium text-gray-900">{selectedVehicle.driverName || 'Unassigned'}</p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Location</p>

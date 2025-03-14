@@ -21,6 +21,7 @@ import {FilterIcon} from '../icons/sidebar/filter-icon';
 import {useSidebarContext} from '../layout/layout-context';
 import {ChangeLogIcon} from '../icons/sidebar/changelog-icon';
 import {VehicleIcon} from '../icons/sidebar/vehicle-icon';
+import {DriverIcon} from '../icons/sidebar/driver-icon';
 import {useRouter} from 'next/router';
 
 export const SidebarWrapper = () => {
@@ -67,6 +68,12 @@ export const SidebarWrapper = () => {
                         title="Vehicles"
                         icon={<VehicleIcon />}
                         href="vehicles"
+                     />
+                     <SidebarItem
+                        isActive={router.pathname === '/drivers'}
+                        title="Drivers"
+                        icon={<DriverIcon />}
+                        href="drivers"
                      />
                      <SidebarItem
                         isActive={router.pathname === '/payments'}

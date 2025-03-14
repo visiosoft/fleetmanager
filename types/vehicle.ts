@@ -11,6 +11,8 @@ export interface Vehicle {
   licenseExpiryDate: string;
   licensePlate: string;
   image?: string;
+  driverId?: string;
+  driverName?: string;
   createdAt: string;
   updatedAt: string;
 } 

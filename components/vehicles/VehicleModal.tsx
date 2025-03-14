@@ -1,6 +1,7 @@
 import { Modal, Button, Input, Dropdown, Text, Grid, Image } from '@nextui-org/react';
 import { useState, useEffect, useRef } from 'react';
 import { Vehicle } from '../../types/vehicle';
+import { Driver } from '../../types/driver';
 import { Key } from 'react';
 
 interface VehicleModalProps {
@@ -23,9 +24,30 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
     licenseExpiryDate: '',
     licensePlate: '',
     location: '',
-    image: ''
+    image: '',
+    driverId: '',
+    driverName: ''
   });
   const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDrivers();
+  }, []);
+
+  const fetchDrivers = async () => {
+    try {
+      const response = await fetch('/api/drivers');
+      if (!response.ok) throw new Error('Failed to fetch drivers');
+      const data = await response.json();
+      setDrivers(data);
+    } catch (error) {
+      console.error('Error fetching drivers:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (vehicle) {
@@ -40,7 +62,9 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
         licenseExpiryDate: vehicle.licenseExpiryDate,
         licensePlate: vehicle.licensePlate,
         location: vehicle.location,
-        image: vehicle.image || ''
+        image: vehicle.image || '',
+        driverId: vehicle.driverId || '',
+        driverName: vehicle.driverName || ''
       });
       setPreviewUrl(vehicle.image || '');
     } else {
@@ -55,7 +79,9 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
         licenseExpiryDate: '',
         licensePlate: '',
         location: '',
-        image: ''
+        image: '',
+        driverId: '',
+        driverName: ''
       });
       setPreviewUrl('');
     }
@@ -213,6 +239,38 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
               labelPlaceholder="Enter model"
               css={{ marginBottom: '$8' }}
             />
+          </Grid>
+
+          {/* Add Driver Selection */}
+          <Grid xs={12}>
+            <Dropdown>
+              <Dropdown.Button 
+                flat 
+                css={{ width: '100%', marginBottom: '$8' }}
+              >
+                {formData.driverName || 'Select Driver'}
+              </Dropdown.Button>
+              <Dropdown.Menu 
+                aria-label="Select Driver"
+                onAction={(key: Key) => {
+                  const selectedDriver = drivers.find(d => d._id === key);
+                  if (selectedDriver) {
+                    setFormData({ 
+                      ...formData, 
+                      driverId: selectedDriver._id,
+                      driverName: `${selectedDriver.firstName} ${selectedDriver.lastName}`
+                    });
+                  }
+                }}
+                selectedKeys={formData.driverId ? [formData.driverId] : []}
+              >
+                {drivers.map((driver) => (
+                  <Dropdown.Item key={driver._id}>
+                    {`${driver.firstName} ${driver.lastName}`}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
           </Grid>
 
           {/* Add Location Field */}
