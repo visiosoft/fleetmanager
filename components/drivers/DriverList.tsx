@@ -8,6 +8,7 @@ import { DeleteIcon } from '../icons/table/delete-icon';
 import { EditIcon } from '../icons/table/edit-icon';
 import { EyeIcon } from '../icons/table/eye-icon';
 import { User } from '@nextui-org/react';
+import { ObjectId } from 'mongodb';
 
 interface Props {
   searchQuery: string;
@@ -53,7 +54,7 @@ export default function DriverList({ searchQuery, statusFilter, onEdit, onDelete
 
   useEffect(() => {
     fetchDrivers();
-  }, [searchQuery, statusFilter, refreshKey]);
+  }, [searchQuery, statusFilter, refreshKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getStatusColor = (status: Driver['status']) => {
     switch (status) {
@@ -127,12 +128,15 @@ export default function DriverList({ searchQuery, statusFilter, onEdit, onDelete
         return (
           <Row justify="center" align="center" css={{ gap: '$8' }}>
             <Tooltip content="Edit driver">
-              <IconButton onClick={() => onEdit(driver)}>
+              <IconButton onClick={() => onEdit(driver)} aria-label={`Edit driver ${driver.firstName} ${driver.lastName}`}>
                 <EditIcon size={20} fill="#979797" />
               </IconButton>
             </Tooltip>
             <Tooltip content="Delete driver" color="error">
-              <IconButton onClick={() => onDelete(driver._id)}>
+              <IconButton 
+                onClick={() => driver._id && onDelete(driver._id.toString())}
+                aria-label={`Delete driver ${driver.firstName} ${driver.lastName}`}
+              >
                 <DeleteIcon size={20} fill="#FF0080" />
               </IconButton>
             </Tooltip>
@@ -176,7 +180,7 @@ export default function DriverList({ searchQuery, statusFilter, onEdit, onDelete
         </Table.Header>
         <Table.Body items={drivers}>
           {(driver) => (
-            <Table.Row key={driver._id}>
+            <Table.Row key={driver._id?.toString()}>
               {(columnKey) => (
                 <Table.Cell>
                   {renderCell(driver, columnKey as string)}
@@ -345,4 +349,4 @@ export default function DriverList({ searchQuery, statusFilter, onEdit, onDelete
       </Modal>
     </Box>
   );
-} 
+}

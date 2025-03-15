@@ -1,6 +1,7 @@
 import { Modal, Button, Input, Dropdown, Row, Text } from '@nextui-org/react';
 import { useState, useEffect } from 'react';
 import { Driver } from '../../types/driver';
+import Image from 'next/image';
 
 interface Props {
   open: boolean;
@@ -221,13 +222,13 @@ export default function DriverModal({ open, onClose, onSubmit, driver }: Props) 
             css={{ mb: '$10' }}
           />
 
-          {formData.image && (
-            <img
-              src={formData.image}
-              alt="Driver preview"
-              style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }}
-            />
-          )}
+          <Image
+            src={formData.image || '/images/avatar.png'}
+            alt="Driver photo"
+            width={100}
+            height={100}
+            className="rounded-lg object-cover"
+          />
         </form>
       </Modal.Body>
       <Modal.Footer>

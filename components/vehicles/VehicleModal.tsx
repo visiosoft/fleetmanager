@@ -200,11 +200,12 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
               <Dropdown.Button 
                 flat 
                 css={{ width: '100%', marginBottom: '$8' }}
+                aria-label={`Current vehicle type: ${formData.type || 'none selected'}`}
               >
                 {formData.type || 'Select Type'}
               </Dropdown.Button>
               <Dropdown.Menu 
-                aria-label="Vehicle Type"
+                aria-label="Select vehicle type"
                 onAction={(key: Key) => setFormData({ ...formData, type: key as Vehicle['type'] })}
                 selectedKeys={[formData.type]}
               >
@@ -245,27 +246,28 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
           <Grid xs={12}>
             <Dropdown>
               <Dropdown.Button 
-                flat 
-                css={{ width: '100%', marginBottom: '$8' }}
+                flat
+                aria-label={`Current driver: ${formData.driverName || 'none selected'}`}
               >
-                {formData.driverName || 'Select Driver'}
+                {formData.driverName || "Select Driver"}
               </Dropdown.Button>
-              <Dropdown.Menu 
-                aria-label="Select Driver"
+              <Dropdown.Menu
+                aria-label="Select a driver"
+                selectionMode="single"
+                selectedKeys={formData.driverId ? [formData.driverId] : []}
                 onAction={(key: Key) => {
-                  const selectedDriver = drivers.find(d => d._id === key);
+                  const selectedDriver = drivers.find(d => d._id?.toString() === key.toString());
                   if (selectedDriver) {
-                    setFormData({ 
-                      ...formData, 
-                      driverId: selectedDriver._id,
+                    setFormData({
+                      ...formData,
+                      driverId: selectedDriver._id?.toString() || '',
                       driverName: `${selectedDriver.firstName} ${selectedDriver.lastName}`
                     });
                   }
                 }}
-                selectedKeys={formData.driverId ? [formData.driverId] : []}
               >
                 {drivers.map((driver) => (
-                  <Dropdown.Item key={driver._id}>
+                  <Dropdown.Item key={driver._id?.toString()}>
                     {`${driver.firstName} ${driver.lastName}`}
                   </Dropdown.Item>
                 ))}
@@ -307,11 +309,12 @@ const VehicleModal = ({ isOpen, onClose, onSubmit, vehicle }: VehicleModalProps)
               <Dropdown.Button 
                 flat 
                 css={{ width: '100%', marginBottom: '$8' }}
+                aria-label={`Current vehicle status: ${formData.status}`}
               >
                 {formData.status.charAt(0).toUpperCase() + formData.status.slice(1)}
               </Dropdown.Button>
               <Dropdown.Menu 
-                aria-label="Vehicle Status"
+                aria-label="Select vehicle status"
                 onAction={(key: Key) => setFormData({ ...formData, status: key as Vehicle['status'] })}
                 selectedKeys={[formData.status]}
               >

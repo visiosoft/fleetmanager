@@ -9,7 +9,8 @@
       "lint": "next lint"
    },
    "dependencies": {
-      "@nextui-org/react": "^1.0.0-beta.10",
+      "@nextui-org/react": "^2.2.9",
+      "@nextui-org/chip": "^2.0.25",
       "@types/mongodb": "^4.0.6",
       "apexcharts": "^3.35.5",
       "mongodb": "^6.14.2",

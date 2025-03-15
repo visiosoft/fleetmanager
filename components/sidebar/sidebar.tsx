@@ -22,6 +22,7 @@ import {useSidebarContext} from '../layout/layout-context';
 import {ChangeLogIcon} from '../icons/sidebar/changelog-icon';
 import {VehicleIcon} from '../icons/sidebar/vehicle-icon';
 import {DriverIcon} from '../icons/sidebar/driver-icon';
+import {CompanyIcon} from '../icons/sidebar/company-icon';
 import {useRouter} from 'next/router';
 
 export const SidebarWrapper = () => {
@@ -126,6 +127,15 @@ export const SidebarWrapper = () => {
                         isActive={router.pathname === '/changelog'}
                         title="Changelog"
                         icon={<ChangeLogIcon />}
+                     />
+                  </SidebarMenu>
+
+                  <SidebarMenu title="Menu">
+                     <SidebarItem
+                        title="Company"
+                        icon={<CompanyIcon />}
+                        isActive={router.pathname === '/company'}
+                        href="/company"
                      />
                   </SidebarMenu>
                </Sidebar.Body>
